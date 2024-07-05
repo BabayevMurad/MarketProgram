@@ -53,6 +53,7 @@ namespace MarketProgram.UserSide.Services
 
             UsersTest = null;
         }
+
         public void Menyu1()
         {
             int colorChoice = 0;
@@ -240,6 +241,8 @@ namespace MarketProgram.UserSide.Services
         {
             int colorChoice = 0;
 
+            List<Product> products = Mehsul[colorChoice].Products!;
+
             ConsoleKeyInfo key;
 
             while (true)
@@ -277,7 +280,7 @@ namespace MarketProgram.UserSide.Services
                         else colorChoice = 0;
                         break;
                     case ConsoleKey.Enter:
-                        Menyu3(Mehsul[colorChoice].Products!);
+                        Menyu3(ref products);
                         break;
                     case ConsoleKey.Spacebar:
                         Menyu4();
@@ -290,11 +293,13 @@ namespace MarketProgram.UserSide.Services
             }
         }
 
-        void Menyu3(List<Product> product)
+        void Menyu3(ref List<Product> product)
         {
             int colorChoice = 0;
 
             ConsoleKeyInfo key;
+
+            Product productAdd = product[colorChoice];
 
             while (true)
             {
@@ -329,7 +334,7 @@ namespace MarketProgram.UserSide.Services
                         else colorChoice = 0;
                         break;
                     case ConsoleKey.Enter:
-                        ProductAddBasket(product[colorChoice]);
+                        ProductAddBasket(ref productAdd);
                         break;
                     case ConsoleKey.Escape:
                         return;
@@ -339,17 +344,12 @@ namespace MarketProgram.UserSide.Services
             }
         }
 
-        void ProductAddBasket(Product product)
+        void ProductAddBasket(ref Product product)
         {
 
             Product? productlist = ProductFinderClass.ProductFinder(Mehsul, product);
 
-            if (productlist is null)
-            {
-                User!.Basket!.Add(product);
-            }
-            else
-                productlist!.Count += 1;
+            User!.Basket!.Add(productlist!);
 
             Console.WriteLine("Produkt Əlavə Olundu.");
 
@@ -458,14 +458,24 @@ namespace MarketProgram.UserSide.Services
 
             if (price1 > price)
             {
+                ProductCountDecrement(User!.Basket!);
                 Console.WriteLine($"Qalığ {price1 - price}");
+                BuyHistory history = new BuyHistory
+                {
+                    UserName = User!.Name,
+                    Products = User!.Basket,
+                    BuyTime = DateTime.Now,
+                    Price = price
+                };
                 FileSaveClass.FileSave(User!.Basket, "UserFilePath");
+                FileSaveClass.FileSave(history!, "BuyHistoryFilePath");
                 Thread.Sleep(1000);
                 User!.Basket!.Clear();
                 return;
             }
             else if (price1 == price)
             {
+                ProductCountDecrement(User!.Basket!);
                 Console.WriteLine("Ödənildi.");
                 BuyHistory history = new BuyHistory
                 {
@@ -475,9 +485,30 @@ namespace MarketProgram.UserSide.Services
                     Price = price
                 };
                 FileSaveClass.FileSave(User!.Basket, "UserFilePath");
+                FileSaveClass.FileSave(history!, "BuyHistoryFilePath");
                 Thread.Sleep(1000);
                 User!.Basket!.Clear();
                 return;
+            }
+        }
+
+        void ProductCountDecrement(List<Product> products)
+        {
+            foreach (Product product in products)
+            {
+                if (product.Count > 1)
+                    product.Count--;
+                else
+                {
+                    foreach (Category category in Mehsul)
+                    {
+                        if (category.Products!.Contains(product))
+                        {
+                            category.Products!.Remove(product);
+                        }
+                    }
+                }
+                    
             }
         }
 
