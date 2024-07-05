@@ -13,9 +13,11 @@ namespace MarketProgram.UserSide.Services
 
         List<Category> Mehsul { get; set; }
 
+        List<BuyHistory>? buyHistories { get; set; }
+
         public ControlPanel()
         {
-            var UsersTest = FileReadClass.FileRead<List<User>>("");
+            var UsersTest = FileReadClass.FileRead<List<User>>("UserFilePath");
 
             if (UsersTest is null)
                 Users = new List<User>();
@@ -24,7 +26,7 @@ namespace MarketProgram.UserSide.Services
 
             UsersTest = null;
 
-            var ProductsTest = FileReadClass.FileRead<List<Category>>("");
+            var ProductsTest = FileReadClass.FileRead<List<Category>>("ProductsFilePath");
 
             if (ProductsTest is null)
             {
@@ -44,14 +46,12 @@ namespace MarketProgram.UserSide.Services
             else
                 Mehsul = ProductsTest;
 
-            UsersTest = null;
+            var BuyHistoryTest = FileReadClass.FileRead<List<BuyHistory>>("BuyHistoryFilePath");
 
-            if (UsersTest is null)
-                Users = new List<User>();
+            if (BuyHistoryTest is null)
+                buyHistories = new List<BuyHistory>();
             else
-                Users = UsersTest;
-
-            UsersTest = null;
+                buyHistories = BuyHistoryTest;
         }
 
         public void Menyu1()
@@ -98,6 +98,7 @@ namespace MarketProgram.UserSide.Services
                             case 0:
                                 FileSaveClass.FileSave(Users, "UserFilePath");
                                 FileSaveClass.FileSave(Mehsul, "ProductsFilePath");
+                                FileSaveClass.FileSave(buyHistories, "BuyHistoryFilePath");
                                 System.Environment.Exit(0);
                                 break;
                             case 1:
@@ -468,7 +469,7 @@ namespace MarketProgram.UserSide.Services
                     Price = price
                 };
                 FileSaveClass.FileSave(User!.Basket, "UserFilePath");
-                FileSaveClass.FileSave(history!, "BuyHistoryFilePath");
+                buyHistories!.Add(history);
                 Thread.Sleep(1000);
                 User!.Basket!.Clear();
                 return;
@@ -485,7 +486,7 @@ namespace MarketProgram.UserSide.Services
                     Price = price
                 };
                 FileSaveClass.FileSave(User!.Basket, "UserFilePath");
-                FileSaveClass.FileSave(history!, "BuyHistoryFilePath");
+                buyHistories!.Add(history);
                 Thread.Sleep(1000);
                 User!.Basket!.Clear();
                 return;
