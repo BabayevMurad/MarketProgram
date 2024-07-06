@@ -16,11 +16,17 @@
             return $"Name: {Name}; Description: {Description}; Price: {Price}; Count: {Count}";
         }
 
+        public string ToStringHistory()
+        {
+            return $"Name: {Name}; Count: {Count}";
+        }
+
         public bool Equal(ref Product product)
         {
             if (Name == product.Name && Price == product.Price && Description == product.Description && Count == product.Count) { return true; }
 
             return false;
         }
+
     }
 }

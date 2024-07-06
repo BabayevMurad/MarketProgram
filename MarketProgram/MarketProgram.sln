@@ -5,9 +5,11 @@ VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketProgram.Library", "MarketProgram.Library\MarketProgram.Library.csproj", "{F94342E3-5CCB-491E-BD35-E5E7B65EB942}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketProgram.AdminSide", "MarketProgram.AdminSide\MarketProgram.AdminSide.csproj", "{EB497FD5-A538-4021-A25C-EA9C12B6E60C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketProgram.AdminSide", "MarketProgram.AdminSide\MarketProgram.AdminSide.csproj", "{EB497FD5-A538-4021-A25C-EA9C12B6E60C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MarketProgram.UserSide", "MarketProgram.UserSide\MarketProgram.UserSide.csproj", "{716DF0AD-92A4-4CCC-8FC2-EA60C9A1DBEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketProgram.UserSide", "MarketProgram.UserSide\MarketProgram.UserSide.csproj", "{716DF0AD-92A4-4CCC-8FC2-EA60C9A1DBEB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MarketPrgram.ProgramFiles", "MarketPrgram.ProgramFiles", "{265B9920-7848-4EBE-A951-E7C9592DEAFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

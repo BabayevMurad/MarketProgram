@@ -1,8 +1,8 @@
 ﻿using MarketProgram.Library.Models;
 
-namespace MarketProgram.UserSide.Helpers
+namespace MarketProgram.Library.Helpers
 {
-    internal class ProductFinderClass
+    public static class ProductFinderClass
     {
         public static Product? ProductFinder(List<Category> categories, Product product_intput)
         {
@@ -13,6 +13,16 @@ namespace MarketProgram.UserSide.Helpers
                     if (product.Equal(ref product_intput))
                         return product;
                 }
+            }
+            return null;
+        }
+
+        public static Product? ProductFinder(List<Product> products, Product product_intput)
+        {
+            foreach (var product in products)
+            {
+                if (product.Equal(ref product_intput))
+                    return product;
             }
             return null;
         }

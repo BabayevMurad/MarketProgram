@@ -1,6 +1,7 @@
 ﻿using MarketProgram.Library.Models;
 using MarketProgram.Library.Helpers.FileWork;
 using MarketProgram.AdminSide.Models;
+using MarketProgram.Library.Helpers;
 
 namespace MarketProgram.AdminSide.Services
 {
@@ -186,7 +187,7 @@ namespace MarketProgram.AdminSide.Services
 
             ConsoleKeyInfo key;
 
-            string[] menyu = ["1.Category.", "2.Add Category.", "3.Delete Category.", "4.Category Name Change.", "5.Statistika."]; 
+            string[] menyu = ["1.Category.", "2.Add Category.", "3.Delete Category.", "4.Category Name Change.", "5.Statistika."];
 
             while (true)
             {
@@ -340,7 +341,7 @@ namespace MarketProgram.AdminSide.Services
                         break;
                 }
             }
-        } 
+        }
 
         void CategoryEdit()
         {
@@ -532,8 +533,8 @@ namespace MarketProgram.AdminSide.Services
         {
             string[] menyu = ["0.Exit", "1.Delete.", "2.Edit"];
 
-            int colorChoice = 0; 
-            
+            int colorChoice = 0;
+
             ConsoleKeyInfo key;
 
             Console.Clear();
@@ -659,7 +660,7 @@ namespace MarketProgram.AdminSide.Services
             }
         }
 
-        void ProductEditChecker(int colorChoice, ref Product product) 
+        void ProductEditChecker(int colorChoice, ref Product product)
         {
             switch (colorChoice)
             {
@@ -747,7 +748,7 @@ namespace MarketProgram.AdminSide.Services
                 goto Start;
             }
 
-           product.Description = name;
+            product.Description = name;
 
             Console.WriteLine("Produkt Descriptionnu dəyişildi.");
 
@@ -892,7 +893,7 @@ namespace MarketProgram.AdminSide.Services
                         else colorChoice = 0;
                         break;
                     case ConsoleKey.Enter:
-                        
+
                         break;
                     case ConsoleKey.Escape:
                         return;
@@ -907,7 +908,7 @@ namespace MarketProgram.AdminSide.Services
             switch (colorChoice)
             {
                 case 0:
-                    
+                    ProductBuy();
                     break;
                 case 1:
                     Bills();
@@ -925,6 +926,58 @@ namespace MarketProgram.AdminSide.Services
             }
         }
 
+        List<Product> ProductBuyAdd()
+        {
+            Console.Clear();
+            Console.ResetColor();
+
+            List<Product> products = new();
+
+            Product? findProduct;
+
+            foreach (var buyHistory in BuyHistories)
+            {
+                foreach (var product in buyHistory.Products!)
+                {
+                    if (products.Exists(x => x.Equals(product)))
+                    {
+                        findProduct = ProductFinderClass.ProductFinder(products, product);
+
+                        if (findProduct == null)
+                            throw new Exception("Ay Da Statistika.");
+
+                        findProduct!.Count++;
+
+                        findProduct = null;
+                    }
+                    else
+                    {
+                        products.Add(product);
+                    }
+                }
+            }
+
+            products.Sort((s1, s2) => s1.Count.CompareTo(s2.Count));
+
+            return products;
+        }
+
+        void ProductBuy()
+        {
+            Console.Clear();
+            Console.ResetColor();
+
+            List<Product> products = ProductBuyAdd();
+
+            Console.WriteLine("Products.");
+
+            foreach (var product in products)
+            {
+                Console.WriteLine(product.ToStringHistory());
+            }
+
+        }
+
         public void Start()
         {
             while (true)
@@ -934,4 +987,5 @@ namespace MarketProgram.AdminSide.Services
             }
         }
     }
+
 }
