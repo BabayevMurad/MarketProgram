@@ -6,10 +6,14 @@
         public double Price { get; set; }
         public string? Description { get; set; }
         public int Count { get; set; }
+        public string? CategoryName { get; set; }
 
         public Product() { }
 
-        public Product(string name, double price, string description, int count) { Name = name; Price = price; Description = description; Count = count; }
+        public Product(string name, double price, string description, int count, string categoryName)
+        {
+            Name = name; Price = price; Description = description; Count = count; CategoryName = categoryName;
+        }
 
         public override string ToString()
         {
@@ -23,7 +27,7 @@
 
         public bool Equal(ref Product product)
         {
-            if (Name == product.Name && Price == product.Price && Description == product.Description && Count == product.Count) { return true; }
+            if (Name == product.Name && Price == product.Price && Description == product.Description) { return true; }
 
             return false;
         }

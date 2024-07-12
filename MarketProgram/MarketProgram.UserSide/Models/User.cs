@@ -16,6 +16,11 @@ namespace MarketProgram.UserSide.Models
         public User() { }
         public User(string name, string surname, string login, string pasword, List<Product> basket) { Name = name; Login = login; Pasword = pasword; Basket = basket; Surname = surname; }
 
+        public override string ToString()
+        {
+            return $"Name: {Name}\nSurname: {Surname}\nLogin: {Login}";
+        }
+
         public bool Equal(ref User user)
         {
             if (Login == user.Login && Pasword == user.Pasword) { return true; }

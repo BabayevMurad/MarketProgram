@@ -10,7 +10,7 @@ namespace MarketProgram.UserSide.Helpers
 
             foreach (var product in products)
             {
-                price += product.Price;
+                price += product.Price * product.Count;
             }
 
             return price;

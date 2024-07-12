@@ -33,14 +33,14 @@ namespace MarketProgram.UserSide.Services
             {
                 Mehsul = new List<Category> {
                     new Category("Un", new List<Product> {
-                        new Product("Çörək", 0.55, "Ağ Çörək.",10),
-                        new Product("Bulka", 0.6, "Kişmişli.",5),
-                        new Product("Çörək", 1, "Qara Çörək.",3),
+                        new Product("Çörək", 0.55, "Ağ Çörək.",10,"Un"),
+                        new Product("Bulka", 0.6, "Kişmişli.",5,"Un"),
+                        new Product("Çörək", 1, "Qara Çörək.",3,"Un"),
                     }),
                     new Category("Süd", new List<Product> {
-                        new Product("Süd", 1.2, "15% 1L.",6),
-                        new Product("Pendir", 0.9, "İvanovka.",2),
-                        new Product("Yağ", 16, "Kərə.",9),
+                        new Product("Süd", 1.2, "15% 1L.",6,"Süd"),
+                        new Product("Pendir", 0.9, "İvanovka.",2,"Süd"),
+                        new Product("Yağ", 16, "Kərə.",9,"Süd"),
                     }),
                 };
             }
@@ -192,7 +192,17 @@ namespace MarketProgram.UserSide.Services
             Console.Clear();
             Console.ResetColor();
 
+
             Console.WriteLine("\t\t\tRegister");
+
+            Console.WriteLine("Əvvələ Qayıtmaq Üçün ESC basın.");
+
+            var key = Console.ReadKey();
+
+            if (key.Key == ConsoleKey.Escape)
+            {
+                return;
+            }
 
             Console.Write("Name: ");
             var name = Console.ReadLine();
@@ -204,7 +214,7 @@ namespace MarketProgram.UserSide.Services
                 goto Start;
             }
 
-            Console.Write("SurName: ");
+            Console.Write("Surname: ");
             var surname = Console.ReadLine();
 
             if (string.IsNullOrWhiteSpace(surname))
@@ -237,13 +247,17 @@ namespace MarketProgram.UserSide.Services
             var useradd = new User(name, surname, login.ToLower(), password, new List<Product> { });
 
             Users!.Add(useradd);
+
+            Console.WriteLine("Uğurla qeydiyatdan keçdiniz.");
+
+            Thread.Sleep(1100);
         }
 
         void Menyu2()
         {
             int colorChoice = 0;
 
-            List<Product> products = Mehsul[colorChoice].Products!;
+            List<Product> products;
 
             ConsoleKeyInfo key;
 
@@ -256,7 +270,7 @@ namespace MarketProgram.UserSide.Services
 
                 Console.WriteLine("Çıxmaq Üçün Esc Basın.");
                 Console.WriteLine("Səbətə Keçmək Üçün Space Basın.");
-                Console.WriteLine("Useri Redaktə Etmək Üçün D Basın.");
+                Console.WriteLine("Useri Profile Girmek Etmək Üçün D Basın.");
 
                 for (int i = 0; i < Mehsul.Count; i++)
                 {
@@ -282,10 +296,14 @@ namespace MarketProgram.UserSide.Services
                         else colorChoice = 0;
                         break;
                     case ConsoleKey.Enter:
+                        products = Mehsul[colorChoice].Products!;
                         Menyu3(ref products);
                         break;
                     case ConsoleKey.Spacebar:
                         Menyu4();
+                        break;
+                    case ConsoleKey.D:
+                        UserRedactorMenyu();
                         break;
                     case ConsoleKey.Escape:
                         return;
@@ -301,10 +319,10 @@ namespace MarketProgram.UserSide.Services
 
             ConsoleKeyInfo key;
 
-            Product productAdd = product[colorChoice];
 
             while (true)
             {
+                Product productAdd = product[colorChoice];
                 Console.Clear();
                 Console.ResetColor();
 
@@ -351,7 +369,30 @@ namespace MarketProgram.UserSide.Services
 
             Product? productlist = ProductFinderClass.ProductFinder(Mehsul, product);
 
-            User!.Basket!.Add(productlist!);
+            if (productlist is null)
+            {
+                Console.WriteLine("Yoxdu Product");
+            }
+
+            if (productlist!.Count > 1)
+                productlist.Count--;
+            else
+            {
+                foreach (var category in Mehsul)
+                {
+                    category.Products!.Remove(productlist);
+                }
+            }
+
+            if (User!.Basket!.Exists(productlamba => productlamba.Equal(ref productlist)))
+            {
+                ProductFinderClass.ProductFinder(User!.Basket, productlist)!.Count++;
+            }
+            else
+            {
+                Product product1 = new Product(productlist.Name!,productlist.Price,productlist.Description!,1,productlist.CategoryName!);
+                User!.Basket!.Add(product1);
+            }
 
             Console.WriteLine("Produkt Əlavə Olundu.");
 
@@ -360,12 +401,33 @@ namespace MarketProgram.UserSide.Services
 
         void Menyu4()
         {
+            if (User!.Basket is null)
+            {
+                User!.Basket = new List<Product>();
+            }
             List<Product> products = User!.Basket!;
+            if (products.Count == 0)
+            {
+                Console.Clear();
+                Console.ResetColor();
+                Console.WriteLine("Sebet boşdur.");
+                Thread.Sleep(1100);
+                return;
+            }
+
             int colorChoice = 0;
-            double allPrice = AllProductsPrice.AllPrice(products);
             ConsoleKeyInfo key;
             while (true)
             {
+                if (products.Count == 0)
+                {
+                    Console.Clear();
+                    Console.ResetColor();
+                    Console.WriteLine("Sebet boşdur.");
+                    Thread.Sleep(1100);
+                    return;
+                }
+                double allPrice = AllProductsPrice.AllPrice(products);
                 Console.Clear();
                 Console.ResetColor();
 
@@ -391,21 +453,21 @@ namespace MarketProgram.UserSide.Services
                     case ConsoleKey.W:
                         if (colorChoice > 0)
                             colorChoice--;
-                        else colorChoice = products.Count;
+                        else colorChoice = products.Count - 1;
                         break;
                     case ConsoleKey.S:
-                        if (colorChoice < products.Count)
+                        if (colorChoice < products.Count - 1)
                             colorChoice++;
                         else colorChoice = 0;
                         break;
                     case ConsoleKey.Enter:
-                        SebetDelete(products[colorChoice]);
+                        var productchoice = products[colorChoice];
+                        SebetDelete(ref productchoice);
                         break;
                     case ConsoleKey.Spacebar:
-
+                        SebetbBuy(allPrice);
                         break;
                     case ConsoleKey.Escape:
-                        SebetbBuy(allPrice);
                         return;
                     default:
                         break;
@@ -413,14 +475,47 @@ namespace MarketProgram.UserSide.Services
             }
         }
 
-        void SebetDelete(Product product)
+        void SebetDelete(ref Product product)
         {
-            if (product.Count > 1!)
+            Product? product1 = ProductFinderClass.ProductFinder(Mehsul, product)!;
+            if (!(product.Count > 1))
             {
+                if (product1 is null)
+                {
+                    for (int i = 0; i < Mehsul.Count; i++)
+                    {
+                        if (Mehsul[i].Name == product.CategoryName)
+                        {
+                            Product product2 = new Product(product.Name!,product.Price,product.Description!,1,product.CategoryName!);
+                            Mehsul[i].Products!.Add(product2);
+                        }
+                    }
+                }
+                else
+                {
+                    product1!.Count++;
+                }
                 User!.Basket!.Remove(product);
             }
             else
+            {
+                if (product1 is null)
+                {
+                    for (int i = 0; i < Mehsul.Count; i++)
+                    {
+                        if (Mehsul[i].Name == product.CategoryName)
+                        {
+                            Product product2 = new Product(product.Name!, product.Price, product.Description!, 1, product.CategoryName!);
+                            Mehsul[i].Products!.Add(product2);
+                        }
+                    }
+                }
+                else
+                {
+                    product1!.Count++;
+                }
                 product.Count--;
+            }
             Console.WriteLine("Element Silindi.");
             Thread.Sleep(1000);
         }
@@ -460,7 +555,6 @@ namespace MarketProgram.UserSide.Services
 
             if (price1 > price)
             {
-                ProductCountDecrement(User!.Basket!);
                 Console.WriteLine($"Qalığ {price1 - price}");
                 BuyHistory history = new BuyHistory
                 {
@@ -473,11 +567,10 @@ namespace MarketProgram.UserSide.Services
                 buyHistories!.Add(history);
                 Thread.Sleep(1000);
                 User!.Basket!.Clear();
-                return;
+                Menyu2();
             }
             else if (price1 == price)
             {
-                ProductCountDecrement(User!.Basket!);
                 Console.WriteLine("Ödənildi.");
                 BuyHistory history = new BuyHistory
                 {
@@ -490,7 +583,7 @@ namespace MarketProgram.UserSide.Services
                 buyHistories!.Add(history);
                 Thread.Sleep(1000);
                 User!.Basket!.Clear();
-                return;
+                Menyu2();
             }
         }
 
@@ -510,7 +603,7 @@ namespace MarketProgram.UserSide.Services
                         }
                     }
                 }
-                    
+
             }
         }
 
@@ -527,15 +620,18 @@ namespace MarketProgram.UserSide.Services
                 Console.Clear();
                 Console.ResetColor();
 
-                Console.WriteLine("\t\tUser Redactor:");
+                Console.WriteLine("\t\tUser Profil:");
+
 
                 Console.WriteLine("Çıxmaq Üçün Esc Basın.");
+
+                Console.WriteLine(User);
 
                 for (int i = 0; i < Mehsul.Count; i++)
                 {
                     if (i == colorChoice)
                         Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine(Mehsul[i]);
+                    Console.WriteLine(menyu[i]);
 
                     Console.ResetColor();
                 }
@@ -645,7 +741,7 @@ namespace MarketProgram.UserSide.Services
                 return;
             }
 
-            Console.Write("Pleace Insert Password:");
+            Console.Write("Pleace Insert Old Password:");
             var password = Console.ReadLine();
 
             if (string.IsNullOrWhiteSpace(password))
@@ -663,6 +759,8 @@ namespace MarketProgram.UserSide.Services
             }
 
             User!.Pasword = password;
+
+            Console.WriteLine("Şifrə Uğurla Dəyişildi.");
         }
 
         public void Start()

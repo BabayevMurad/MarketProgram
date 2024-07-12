@@ -32,14 +32,14 @@ namespace MarketProgram.AdminSide.Services
             {
                 Mehsul = new List<Category> {
                     new Category("Un", new List<Product> {
-                        new Product("Çörək", 0.55, "Ağ Çörək.",10),
-                        new Product("Bulka", 0.6, "Kişmişli.",5),
-                        new Product("Çörək", 1, "Qara Çörək.",3),
+                        new Product("Çörək", 0.55, "Ağ Çörək.",10,"Un"),
+                        new Product("Bulka", 0.6, "Kişmişli.",5, "Un"),
+                        new Product("Çörək", 1, "Qara Çörək.",3, "Un"),
                     }),
                     new Category("Süd", new List<Product> {
-                        new Product("Süd", 1.2, "15% 1L.",6),
-                        new Product("Pendir", 0.9, "İvanovka.",2),
-                        new Product("Yağ", 16, "Kərə.",9),
+                        new Product("Süd", 1.2, "15% 1L.",6,"Süd"),
+                        new Product("Pendir", 0.9, "İvanovka.",2,"Süd"),
+                        new Product("Yağ", 16, "Kərə.",9, "Süd"),
                     }),
                 };
             }
@@ -422,6 +422,7 @@ namespace MarketProgram.AdminSide.Services
             }
 
             category.Name = name;
+ 
 
             Console.WriteLine("Kateqoriya adı dəyişildi.");
 

@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketProgram.AdminSide", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MarketProgram.UserSide", "MarketProgram.UserSide\MarketProgram.UserSide.csproj", "{716DF0AD-92A4-4CCC-8FC2-EA60C9A1DBEB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MarketPrgram.ProgramFiles", "MarketPrgram.ProgramFiles", "{265B9920-7848-4EBE-A951-E7C9592DEAFD}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
