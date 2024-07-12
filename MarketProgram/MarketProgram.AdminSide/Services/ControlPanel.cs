@@ -3,6 +3,7 @@ using MarketProgram.Library.Helpers.FileWork;
 using MarketProgram.AdminSide.Models;
 using MarketProgram.Library.Helpers;
 
+
 namespace MarketProgram.AdminSide.Services
 {
     internal class ControlPanel
@@ -187,7 +188,7 @@ namespace MarketProgram.AdminSide.Services
 
             ConsoleKeyInfo key;
 
-            string[] menyu = ["1.Category.", "2.Add Category.", "3.Delete Category.", "4.Category Name Change.", "5.Statistika."];
+            string[] menyu = ["1.Category.", "2.Statistika."];
 
             while (true)
             {
@@ -240,13 +241,7 @@ namespace MarketProgram.AdminSide.Services
                     Menyu2();
                     break;
                 case 1:
-                    CategoryAdd();
-                    break;
-                case 2:
-                    CategoryDelete();
-                    break;
-                case 3:
-                    CategoryEdit();
+                    Statistika();
                     break;
                 default:
                     break;
@@ -293,54 +288,10 @@ namespace MarketProgram.AdminSide.Services
             return;
         }
 
-        void CategoryDelete()
+        void CategoryDelete(int colorChoice)
         {
-            int colorChoice = 0;
-
-            ConsoleKeyInfo key;
-
-            while (true)
-            {
-                Console.Clear();
-                Console.ResetColor();
-
-                Console.WriteLine("\t\t\tCategory Delete");
-
-                Console.WriteLine("Çıxmaq Üçün Esc Basın.");
-
-                for (int i = 0; i < Mehsul.Count; i++)
-                {
-                    if (i == colorChoice)
-                        Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine(Mehsul[i]);
-
-                    Console.ResetColor();
-                }
-
-                key = Console.ReadKey();
-
-                switch (key.Key)
-                {
-                    case ConsoleKey.W:
-                        if (colorChoice > 0)
-                            colorChoice--;
-                        else colorChoice = Mehsul.Count - 1;
-                        break;
-                    case ConsoleKey.S:
-                        if (colorChoice < Mehsul.Count - 1)
-                            colorChoice++;
-                        else colorChoice = 0;
-                        break;
-                    case ConsoleKey.Enter:
-                        Mehsul.Remove(Mehsul[colorChoice]);
-                        Console.WriteLine("Kateqoriya Silindi.");
-                        break;
-                    case ConsoleKey.Escape:
-                        return;
-                    default:
-                        break;
-                }
-            }
+            Mehsul.Remove(Mehsul[colorChoice]);
+            Console.WriteLine("Kateqoriya Silindi.");
         }
 
         void CategoryEdit()
@@ -422,7 +373,7 @@ namespace MarketProgram.AdminSide.Services
             }
 
             category.Name = name;
- 
+
 
             Console.WriteLine("Kateqoriya adı dəyişildi.");
 
@@ -445,6 +396,9 @@ namespace MarketProgram.AdminSide.Services
                 Console.WriteLine("\t\t\tCategories");
 
                 Console.WriteLine("Çıxmaq Üçün Esc Basın.");
+
+                Console.WriteLine("Kateqoriya Əlavə etmək Üçün A Basın.");
+                Console.WriteLine("Kateqoriya Silmək Üçün Kateqoriya Seçin Və D Basın.");
 
                 for (int i = 0; i < Mehsul.Count; i++)
                 {
@@ -469,8 +423,24 @@ namespace MarketProgram.AdminSide.Services
                             colorChoice++;
                         else colorChoice = 0;
                         break;
+                    case ConsoleKey.A:
+                        CategoryAdd();
+                        break;
+                    case ConsoleKey.D:
+                        CategoryDelete(colorChoice);
+                        break;
                     case ConsoleKey.Enter:
-                        Menyu3(Mehsul[colorChoice].Products!);
+                        if (Mehsul.Count == 0)
+                        {
+                            Console.WriteLine("Boşdur.");
+                            Thread.Sleep(1000);
+                            return;
+                        }
+                        else
+                        {
+                            var productsref = Mehsul[colorChoice].Products!;
+                            Menyu3(ref productsref, colorChoice);
+                        }
                         break;
                     case ConsoleKey.Escape:
                         return;
@@ -480,7 +450,7 @@ namespace MarketProgram.AdminSide.Services
             }
         }
 
-        void Menyu3(List<Product> products)
+        void Menyu3(ref List<Product> products, int colorchoiceforcategory)
         {
             int colorChoice = 0;
 
@@ -494,7 +464,7 @@ namespace MarketProgram.AdminSide.Services
                 Console.WriteLine("\t\t\tProducts");
 
                 Console.WriteLine("Çıxmaq Üçün Esc Basın.");
-                Console.WriteLine("Produkt Əlavə Etmək Üçün A Basın.");
+                Console.WriteLine("Produkt Əlavə Üçün A Basın.");
 
                 for (int i = 0; i < products.Count; i++)
                 {
@@ -520,7 +490,16 @@ namespace MarketProgram.AdminSide.Services
                         else colorChoice = 0;
                         break;
                     case ConsoleKey.Enter:
-                        Menyu5(products[colorChoice]);
+                        if (products.Count == 0)
+                        {
+                            Console.WriteLine("Boşdur.");
+                            Thread.Sleep(1000);
+                        }
+                        else
+                            Menyu5(products[colorChoice]);
+                        break;
+                    case ConsoleKey.A:
+                        ProductAdd(Mehsul[colorchoiceforcategory].Name!);
                         break;
                     case ConsoleKey.Escape:
                         return;
@@ -599,6 +578,80 @@ namespace MarketProgram.AdminSide.Services
         #endregion
 
         #region Products
+
+        void ProductAdd(string categoryname)
+        {
+            ConsoleKeyInfo key;
+        Start:
+            Console.Clear();
+            Console.ResetColor();
+
+
+            Console.WriteLine("\t\t\tProduct Add.");
+
+            Console.WriteLine("Çıxmaq Üçün Esc Basın.");
+
+            key = Console.ReadKey();
+
+            if (key.Key == ConsoleKey.Escape)
+                return;
+
+            Console.Write("Productun Adını Daxil Edin :");
+
+            string? name = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                Console.WriteLine("Xaiş olunur düzgün daxil edin.");
+                Thread.Sleep(1200);
+                goto Start;
+            }
+
+            Console.Write("Productun Descriptionu Daxil Edin :");
+
+            string? descriptionu = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(descriptionu))
+            {
+                Console.WriteLine("Xaiş olunur düzgün daxil edin.");
+                Thread.Sleep(1200);
+                goto Start;
+            }
+
+            string? pricestr = Console.ReadLine();
+
+            double price = 0;
+            if (string.IsNullOrWhiteSpace(pricestr) && double.TryParse(pricestr, out price))
+            {
+                Console.WriteLine("Xaiş olunur düzgün daxil edin.");
+                Thread.Sleep(1200);
+                goto Start;
+            }
+
+            string? countstr = Console.ReadLine();
+
+            int count = 0;
+            if (string.IsNullOrWhiteSpace(countstr) && int.TryParse(countstr, out count))
+            {
+                Console.WriteLine("Xaiş olunur düzgün daxil edin.");
+                Thread.Sleep(1200);
+                goto Start;
+            }
+
+            foreach (var category in Mehsul)
+            {
+                if (category.Name == categoryname)
+                {
+                    category.Products!.Add(new Product(name, price, descriptionu, count, categoryname));
+                }
+            }
+
+            Console.WriteLine("Produkt əlavə olundu.");
+
+            Thread.Sleep(1000);
+
+            return;
+        }
 
         void ProductDelete(ref Product product)
         {
@@ -691,14 +744,15 @@ namespace MarketProgram.AdminSide.Services
             Console.Clear();
             Console.ResetColor();
 
+
+            Console.WriteLine("\t\t\tProduct Name Edit.");
+
             Console.WriteLine("Çıxmaq Üçün Esc Basın.");
 
             key = Console.ReadKey();
 
             if (key.Key == ConsoleKey.Escape)
                 return;
-
-            Console.WriteLine("\t\t\tProduct Name Edit.");
 
             Console.Write("Productun Adını Daxil Edin :");
 
@@ -816,14 +870,15 @@ namespace MarketProgram.AdminSide.Services
             Console.Clear();
             Console.ResetColor();
 
+
+            Console.WriteLine("\t\t\tProduct price Edit.");
+
             Console.WriteLine("Çıxmaq Üçün Esc Basın.");
 
             key = Console.ReadKey();
 
             if (key.Key == ConsoleKey.Escape)
                 return;
-
-            Console.WriteLine("\t\t\tProduct price Edit.");
 
             Console.Write("Produkt Qiymetini Daxil Edin :");
 
@@ -853,20 +908,22 @@ namespace MarketProgram.AdminSide.Services
         }
         #endregion
 
-        void Statistika(ref List<BuyHistory> buyHistories)
+        #region Statistika
+
+        void Statistika()
         {
             int colorChoice = 0;
 
             ConsoleKeyInfo key;
 
-            string[] menyu = ["1.Statistika.", "2.Çeklər."];
+            string[] menyu = ["1.Statistika Product.", "2. Statistika Qiymət." ,"3.Çeklər."];
 
             while (true)
             {
                 Console.Clear();
                 Console.ResetColor();
 
-                Console.WriteLine("\t\t\tMenyu");
+                Console.WriteLine("\t\t\tStatistika");
 
                 Console.WriteLine("Çıxmaq Üçün Esc Basın.");
 
@@ -894,7 +951,7 @@ namespace MarketProgram.AdminSide.Services
                         else colorChoice = 0;
                         break;
                     case ConsoleKey.Enter:
-
+                        StatistikaChecker(colorChoice);
                         break;
                     case ConsoleKey.Escape:
                         return;
@@ -912,6 +969,9 @@ namespace MarketProgram.AdminSide.Services
                     ProductBuy();
                     break;
                 case 1:
+                    BuyPrice();
+                    break;
+                case 2:
                     Bills();
                     break;
                 default:
@@ -927,10 +987,12 @@ namespace MarketProgram.AdminSide.Services
             }
         }
 
+        #endregion
+
+        #region Statistika
+
         List<Product> ProductBuyAdd()
         {
-            Console.Clear();
-            Console.ResetColor();
 
             List<Product> products = new();
 
@@ -977,7 +1039,59 @@ namespace MarketProgram.AdminSide.Services
                 Console.WriteLine(product.ToStringHistory());
             }
 
+            Console.ReadKey();
         }
+
+        List<Prices> BuyPriceAdd()
+        {
+            List<BuyHistory> buyhistory = new();
+            foreach (var buyhistrory in BuyHistories)
+            {
+                buyhistory.Add(buyhistrory.Copy());
+            }
+
+            List<Prices> prices = new List<Prices>();
+
+            DateTime dateTime;
+
+            while (buyhistory.Count == 0)
+            {
+                dateTime = buyhistory.First().BuyTime;
+                Prices prices1 = new(dateTime, 0);
+
+                for (int i = 0; i < buyhistory.Count; i++)
+                {
+                    if (buyhistory[i].BuyTime == dateTime)
+                    {
+                        prices1.Price += buyhistory[i].Price;
+                        buyhistory.Remove(buyhistory[i]);
+                    }
+                }
+                prices.Add(prices1);
+                prices1.Price = 0;
+            }
+
+            return prices;
+        }
+
+        void BuyPrice()
+        {
+            Console.Clear();
+            Console.ResetColor();
+
+            List<Prices> prices = BuyPriceAdd();
+
+            Console.WriteLine("Products.");
+
+            foreach (var price in prices)
+            {
+                Console.WriteLine(price);
+            }
+
+            Console.ReadKey();
+        }
+
+        #endregion
 
         public void Start()
         {

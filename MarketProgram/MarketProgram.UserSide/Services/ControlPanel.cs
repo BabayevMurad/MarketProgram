@@ -14,7 +14,7 @@ namespace MarketProgram.UserSide.Services
 
         List<Category> Mehsul { get; set; }
 
-        List<BuyHistory>? buyHistories { get; set; }
+        List<BuyHistory>? BuyHistories { get; set; }
 
         public ControlPanel()
         {
@@ -50,9 +50,9 @@ namespace MarketProgram.UserSide.Services
             var BuyHistoryTest = FileReadClass.FileRead<List<BuyHistory>>("BuyHistoryFilePath");
 
             if (BuyHistoryTest is null)
-                buyHistories = new List<BuyHistory>();
+                BuyHistories = new List<BuyHistory>();
             else
-                buyHistories = BuyHistoryTest;
+                BuyHistories = BuyHistoryTest;
         }
 
         public void Menyu1()
@@ -99,7 +99,7 @@ namespace MarketProgram.UserSide.Services
                             case 0:
                                 FileSaveClass.FileSave(Users, "UserFilePath");
                                 FileSaveClass.FileSave(Mehsul, "ProductsFilePath");
-                                FileSaveClass.FileSave(buyHistories, "BuyHistoryFilePath");
+                                FileSaveClass.FileSave(BuyHistories, "BuyHistoryFilePath");
                                 System.Environment.Exit(0);
                                 break;
                             case 1:
@@ -390,7 +390,7 @@ namespace MarketProgram.UserSide.Services
             }
             else
             {
-                Product product1 = new Product(productlist.Name!,productlist.Price,productlist.Description!,1,productlist.CategoryName!);
+                Product product1 = new Product(productlist.Name!, productlist.Price, productlist.Description!, 1, productlist.CategoryName!);
                 User!.Basket!.Add(product1);
             }
 
@@ -486,7 +486,7 @@ namespace MarketProgram.UserSide.Services
                     {
                         if (Mehsul[i].Name == product.CategoryName)
                         {
-                            Product product2 = new Product(product.Name!,product.Price,product.Description!,1,product.CategoryName!);
+                            Product product2 = new Product(product.Name!, product.Price, product.Description!, 1, product.CategoryName!);
                             Mehsul[i].Products!.Add(product2);
                         }
                     }
@@ -558,13 +558,13 @@ namespace MarketProgram.UserSide.Services
                 Console.WriteLine($"Qalığ {price1 - price}");
                 BuyHistory history = new BuyHistory
                 {
-                    UserName = User!.Name,
+                    UserLogin = User!.Login,
                     Products = User!.Basket,
                     BuyTime = DateTime.Now,
                     Price = price
                 };
                 FileSaveClass.FileSave(User!.Basket, "UserFilePath");
-                buyHistories!.Add(history);
+                BuyHistories!.Add(history);
                 Thread.Sleep(1000);
                 User!.Basket!.Clear();
                 Menyu2();
@@ -574,13 +574,13 @@ namespace MarketProgram.UserSide.Services
                 Console.WriteLine("Ödənildi.");
                 BuyHistory history = new BuyHistory
                 {
-                    UserName = User!.Name,
+                    UserLogin = User!.Login,
                     Products = User!.Basket,
                     BuyTime = DateTime.Now,
                     Price = price
                 };
                 FileSaveClass.FileSave(User!.Basket, "UserFilePath");
-                buyHistories!.Add(history);
+                BuyHistories!.Add(history);
                 Thread.Sleep(1000);
                 User!.Basket!.Clear();
                 Menyu2();
@@ -609,7 +609,7 @@ namespace MarketProgram.UserSide.Services
 
         void UserRedactorMenyu()
         {
-            string[] menyu = ["1.Name", "2.Surname", "3.Password"];
+            string[] menyu = ["1.Name", "2.Surname", "3.Password", "4.History"];
 
             int colorChoice = 0;
 
@@ -661,6 +661,37 @@ namespace MarketProgram.UserSide.Services
             }
         }
 
+        void UserBuyHistory()
+        {
+            bool exsits = false;
+            foreach (var history in BuyHistories!)
+            {
+                if (history.UserLogin == User!.Login)
+                {
+                    exsits = true;
+                }
+            }
+            Console.Clear();
+            Console.ResetColor();
+            Console.WriteLine("User Buy History.");
+
+            if (!exsits)
+            {
+                Console.WriteLine("Burda Məlumat Yoxdu.");
+                Thread.Sleep(1000);
+                return;
+            }
+
+            foreach (var history in BuyHistories!)
+            {
+                if (history.UserLogin == User!.Login)
+                {
+                    Console.WriteLine(history);
+                }
+            }
+            Console.ReadKey();
+        }
+
         void UserRedactorChecker(int Choice)
         {
             switch (Choice)
@@ -673,6 +704,9 @@ namespace MarketProgram.UserSide.Services
                     break;
                 case 2:
                     UserPasswordChange();
+                    break;
+                case 3:
+                    UserBuyHistory();
                     break;
                 default:
                     break;

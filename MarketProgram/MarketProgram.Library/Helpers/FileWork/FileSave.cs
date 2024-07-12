@@ -15,5 +15,16 @@ namespace MarketProgram.Library.Helpers.FileWork
 
             File.WriteAllText(path, json);
         }
+
+        public static void FileSave<T>(T some, string fileWritePath, bool mod)
+        {
+            string path;
+
+            path = ConfigurationManager.AppSettings[fileWritePath]!;
+
+            string json = JsonSerializer.Serialize(some);
+
+            File.AppendAllText(path, json);
+        }
     }
 }
