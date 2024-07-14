@@ -179,6 +179,7 @@ namespace MarketProgram.UserSide.Services
                 Console.WriteLine("Uğurla geydiyatdan keçdiniz.");
                 Thread.Sleep(1100);
                 User = user2;
+                User.Basket = new();
                 return true;
             }
 
@@ -296,8 +297,17 @@ namespace MarketProgram.UserSide.Services
                         else colorChoice = 0;
                         break;
                     case ConsoleKey.Enter:
-                        products = Mehsul[colorChoice].Products!;
-                        Menyu3(ref products);
+                        if (Mehsul.Count == 0)
+                        {
+                            Console.WriteLine("Bosdur");
+                            Thread.Sleep(1000);
+                        }
+                        else
+                        {
+                            products = Mehsul[colorChoice].Products!;
+                            Menyu3(ref products);
+                            colorChoice = 0;
+                        }
                         break;
                     case ConsoleKey.Spacebar:
                         Menyu4();
@@ -354,7 +364,16 @@ namespace MarketProgram.UserSide.Services
                         else colorChoice = 0;
                         break;
                     case ConsoleKey.Enter:
-                        ProductAddBasket(ref productAdd);
+                        if (productAdd.Count == 0)
+                        {
+                            Console.WriteLine("Bosdur");
+                            Thread.Sleep(1000);
+                        }
+                        else
+                        {
+                            ProductAddBasket(ref productAdd);
+                            colorChoice = 0;
+                        }
                         break;
                     case ConsoleKey.Escape:
                         return;
@@ -384,7 +403,17 @@ namespace MarketProgram.UserSide.Services
                 }
             }
 
-            if (User!.Basket!.Exists(productlamba => productlamba.Equal(ref productlist)))
+            bool productexsit = false;
+
+            foreach (var product1 in User!.Basket!)
+            {
+                if (product1.Equal(ref productlist))
+                {
+                    productexsit = true;
+                }
+            }
+
+            if (productexsit)
             {
                 ProductFinderClass.ProductFinder(User!.Basket, productlist)!.Count++;
             }
@@ -556,14 +585,18 @@ namespace MarketProgram.UserSide.Services
             if (price1 > price)
             {
                 Console.WriteLine($"Qalığ {price1 - price}");
-                BuyHistory history = new BuyHistory
+                List<Product> productelave = new List<Product>();
+                foreach (Product product in User!.Basket!)
                 {
-                    UserLogin = User!.Login,
-                    Products = User!.Basket,
-                    BuyTime = DateTime.Now,
-                    Price = price
-                };
-                FileSaveClass.FileSave(User!.Basket, "UserFilePath");
+                    productelave.Add(product.Copy());
+                }
+
+                string userlogin = "";
+                foreach (var item in User!.Login!)
+                {
+                    userlogin += item;
+                }
+                BuyHistory history = new BuyHistory(userlogin, DateTime.Now, productelave, price);
                 BuyHistories!.Add(history);
                 Thread.Sleep(1000);
                 User!.Basket!.Clear();
@@ -572,14 +605,18 @@ namespace MarketProgram.UserSide.Services
             else if (price1 == price)
             {
                 Console.WriteLine("Ödənildi.");
-                BuyHistory history = new BuyHistory
+                List<Product> productelave = new List<Product>();
+                foreach (Product product in User!.Basket!)
                 {
-                    UserLogin = User!.Login,
-                    Products = User!.Basket,
-                    BuyTime = DateTime.Now,
-                    Price = price
-                };
-                FileSaveClass.FileSave(User!.Basket, "UserFilePath");
+                    productelave.Add(product.Copy());
+                }
+
+                string userlogin = "";
+                foreach (var item in User!.Login!)
+                {
+                    userlogin += item;
+                }
+                BuyHistory history = new BuyHistory(userlogin, DateTime.Now, productelave, price);
                 BuyHistories!.Add(history);
                 Thread.Sleep(1000);
                 User!.Basket!.Clear();
@@ -627,7 +664,7 @@ namespace MarketProgram.UserSide.Services
 
                 Console.WriteLine(User);
 
-                for (int i = 0; i < Mehsul.Count; i++)
+                for (int i = 0; i < menyu.Length; i++)
                 {
                     if (i == colorChoice)
                         Console.ForegroundColor = ConsoleColor.Green;
@@ -682,11 +719,11 @@ namespace MarketProgram.UserSide.Services
                 return;
             }
 
-            foreach (var history in BuyHistories!)
+            foreach (BuyHistory history in BuyHistories!)
             {
                 if (history.UserLogin == User!.Login)
                 {
-                    Console.WriteLine(history);
+                    history.ConsoleWrite();
                 }
             }
             Console.ReadKey();
@@ -792,9 +829,21 @@ namespace MarketProgram.UserSide.Services
                 goto Start;
             }
 
-            User!.Pasword = password;
+            Console.Write("Pleace Insert New Password:");
+            var passwordchange = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(passwordchange))
+            {
+                Console.WriteLine("Xaiş olunur düzgün daxil edin.");
+                Thread.Sleep(1200);
+                goto Start;
+            }
+
+            User!.Pasword = passwordchange;
 
             Console.WriteLine("Şifrə Uğurla Dəyişildi.");
+
+            Thread.Sleep(1000);
         }
 
         public void Start()

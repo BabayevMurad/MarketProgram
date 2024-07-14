@@ -32,5 +32,16 @@
             return false;
         }
 
+        public Product Copy()
+        {
+            Product product = new Product();
+            product.Name = Name;
+            product.Price = Price;
+            product.Description = Description;
+            product.Count = Count;
+            product.CategoryName = CategoryName;
+            return product;
+        }
+
     }
 }
