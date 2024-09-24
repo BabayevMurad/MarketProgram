@@ -1,12 +1,88 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\murad\\OneDrive\\Desktop\\Final Task C#\\MarketProgram\\",
-  "Documents": [],
+  "WorkspaceRootPath": "C:\\Users\\murad\\OneDrive\\Desktop\\MarketProgram\\MarketProgram\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{F94342E3-5CCB-491E-BD35-E5E7B65EB942}|MarketProgram.Library\\MarketProgram.Library.csproj|c:\\users\\murad\\onedrive\\desktop\\marketprogram\\marketprogram\\marketprogram.library\\data\\marketappcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F94342E3-5CCB-491E-BD35-E5E7B65EB942}|MarketProgram.Library\\MarketProgram.Library.csproj|solutionrelative:marketprogram.library\\data\\marketappcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F94342E3-5CCB-491E-BD35-E5E7B65EB942}|MarketProgram.Library\\MarketProgram.Library.csproj|c:\\users\\murad\\onedrive\\desktop\\marketprogram\\marketprogram\\marketprogram.library\\services\\controlpaneluser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F94342E3-5CCB-491E-BD35-E5E7B65EB942}|MarketProgram.Library\\MarketProgram.Library.csproj|solutionrelative:marketprogram.library\\services\\controlpaneluser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F94342E3-5CCB-491E-BD35-E5E7B65EB942}|MarketProgram.Library\\MarketProgram.Library.csproj|c:\\users\\murad\\onedrive\\desktop\\marketprogram\\marketprogram\\marketprogram.library\\services\\controlpaneladmin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F94342E3-5CCB-491E-BD35-E5E7B65EB942}|MarketProgram.Library\\MarketProgram.Library.csproj|solutionrelative:marketprogram.library\\services\\controlpaneladmin.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F94342E3-5CCB-491E-BD35-E5E7B65EB942}|MarketProgram.Library\\MarketProgram.Library.csproj|c:\\users\\murad\\onedrive\\desktop\\marketprogram\\marketprogram\\marketprogram.library\\helpers\\filework\\filesave.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F94342E3-5CCB-491E-BD35-E5E7B65EB942}|MarketProgram.Library\\MarketProgram.Library.csproj|solutionrelative:marketprogram.library\\helpers\\filework\\filesave.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ControlPanelAdmin.cs",
+              "DocumentMoniker": "C:\\Users\\murad\\OneDrive\\Desktop\\MarketProgram\\MarketProgram\\MarketProgram.Library\\Services\\ControlPanelAdmin.cs",
+              "RelativeDocumentMoniker": "MarketProgram.Library\\Services\\ControlPanelAdmin.cs",
+              "ToolTip": "C:\\Users\\murad\\OneDrive\\Desktop\\MarketProgram\\MarketProgram\\MarketProgram.Library\\Services\\ControlPanelAdmin.cs",
+              "RelativeToolTip": "MarketProgram.Library\\Services\\ControlPanelAdmin.cs",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAowCEAAAAlAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-24T06:54:26.45Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ControlPanelUser.cs",
+              "DocumentMoniker": "C:\\Users\\murad\\OneDrive\\Desktop\\MarketProgram\\MarketProgram\\MarketProgram.Library\\Services\\ControlPanelUser.cs",
+              "RelativeDocumentMoniker": "MarketProgram.Library\\Services\\ControlPanelUser.cs",
+              "ToolTip": "C:\\Users\\murad\\OneDrive\\Desktop\\MarketProgram\\MarketProgram\\MarketProgram.Library\\Services\\ControlPanelUser.cs",
+              "RelativeToolTip": "MarketProgram.Library\\Services\\ControlPanelUser.cs",
+              "ViewState": "AQIAAAgAAAAAAAAAAAAxwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-24T06:54:25.378Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MarketAppContext.cs",
+              "DocumentMoniker": "C:\\Users\\murad\\OneDrive\\Desktop\\MarketProgram\\MarketProgram\\MarketProgram.Library\\Data\\MarketAppContext.cs",
+              "RelativeDocumentMoniker": "MarketProgram.Library\\Data\\MarketAppContext.cs",
+              "ToolTip": "C:\\Users\\murad\\OneDrive\\Desktop\\MarketProgram\\MarketProgram\\MarketProgram.Library\\Data\\MarketAppContext.cs",
+              "RelativeToolTip": "MarketProgram.Library\\Data\\MarketAppContext.cs",
+              "ViewState": "AQIAAB4AAAAAAAAAAAAcwEMAAAAUAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-24T06:51:07.891Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "FileSave.cs",
+              "DocumentMoniker": "C:\\Users\\murad\\OneDrive\\Desktop\\MarketProgram\\MarketProgram\\MarketProgram.Library\\Helpers\\FileWork\\FileSave.cs",
+              "RelativeDocumentMoniker": "MarketProgram.Library\\Helpers\\FileWork\\FileSave.cs",
+              "ToolTip": "C:\\Users\\murad\\OneDrive\\Desktop\\MarketProgram\\MarketProgram\\MarketProgram.Library\\Helpers\\FileWork\\FileSave.cs",
+              "RelativeToolTip": "MarketProgram.Library\\Helpers\\FileWork\\FileSave.cs",
+              "ViewState": "AQIAAAcAAAAAAAAAAAAQwBoAAAArAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-23T20:10:14.065Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -1,4 +1,4 @@
-﻿using MarketProgram.UserSide.Services;
+﻿using MarketProgram.Library.Services;
 using System.Text;
 
 namespace MarketProgram.UserSide
@@ -10,7 +10,7 @@ namespace MarketProgram.UserSide
             Console.InputEncoding = Encoding.UTF8;
             Console.OutputEncoding = Encoding.UTF8;
 
-            ControlPanel panel = new();
+            ControlPanelUser panel = new();
 
             panel.Start();
         }

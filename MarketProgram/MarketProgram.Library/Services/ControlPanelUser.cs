@@ -1,13 +1,14 @@
 ﻿using MarketProgram.Library.Helpers.FileWork;
 using MarketProgram.Library.Helpers;
+using MarketProgram.Library.Helpers.UserSide;
 using MarketProgram.Library.Models;
-using MarketProgram.UserSide.Helpers;
-using MarketProgram.UserSide.Models;
+using MarketProgram.Library.Data;
 
-namespace MarketProgram.UserSide.Services
+namespace MarketProgram.Library.Services
 {
-    internal class ControlPanel
+    public class ControlPanelUser
     {
+        public int Id { get; set; }
         List<User>? Users { get; set; }
 
         User? User { get; set; }
@@ -16,9 +17,11 @@ namespace MarketProgram.UserSide.Services
 
         List<BuyHistory>? BuyHistories { get; set; }
 
-        public ControlPanel()
+        MarketAppContext? MarketAppContext { get; set; } = new MarketAppContext();
+
+        public ControlPanelUser()
         {
-            var UsersTest = FileReadClass.FileRead<List<User>>("UserFilePath");
+            var UsersTest = FileReadClass.FileReadUser(MarketAppContext!);
 
             if (UsersTest is null)
                 Users = new List<User>();
@@ -27,7 +30,7 @@ namespace MarketProgram.UserSide.Services
 
             UsersTest = null;
 
-            var ProductsTest = FileReadClass.FileRead<List<Category>>("ProductsFilePath");
+            var ProductsTest = FileReadClass.FileReadProduct(MarketAppContext!);
 
             if (ProductsTest is null)
             {
@@ -47,7 +50,7 @@ namespace MarketProgram.UserSide.Services
             else
                 Mehsul = ProductsTest;
 
-            var BuyHistoryTest = FileReadClass.FileRead<List<BuyHistory>>("BuyHistoryFilePath");
+            var BuyHistoryTest = FileReadClass.FileReadBuyHistory(MarketAppContext!);
 
             if (BuyHistoryTest is null)
                 BuyHistories = new List<BuyHistory>();
@@ -97,9 +100,9 @@ namespace MarketProgram.UserSide.Services
                         switch (colorChoice)
                         {
                             case 0:
-                                FileSaveClass.FileSave(Users, "UserFilePath");
-                                FileSaveClass.FileSave(Mehsul, "ProductsFilePath");
-                                FileSaveClass.FileSave(BuyHistories, "BuyHistoryFilePath");
+                                FileSaveClass.FileSaveUser(MarketAppContext!, Users!);
+                                FileSaveClass.FileSaveProduct(MarketAppContext! , Mehsul);
+                                FileSaveClass.FileSaveBuyHistory(MarketAppContext!, BuyHistories!);
                                 System.Environment.Exit(0);
                                 break;
                             case 1:
@@ -856,3 +859,4 @@ namespace MarketProgram.UserSide.Services
         }
     }
 }
+

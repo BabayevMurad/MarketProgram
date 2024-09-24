@@ -1,26 +1,30 @@
-﻿using System.Configuration;
-using System.Text.Json;
+﻿using MarketProgram.Library.Models;
+using MarketProgram.Library.Data;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace MarketProgram.Library.Helpers.FileWork
 {
     public static class FileReadClass
     {
-        public static T? FileRead<T>(string fileWritePath)
+        public static List<User> FileReadUser(MarketAppContext marketAppContext)
         {
+            return marketAppContext.User.Include(u => u.Basket).ToList();
+        }
 
-            string path;
+        public static List<Category> FileReadProduct(MarketAppContext marketAppContext)
+        {
+            return marketAppContext.Category.Include(c => c.Products).ToList();
+        }
 
-            path = ConfigurationManager.AppSettings[fileWritePath]!;
+        public static List<BuyHistory> FileReadBuyHistory(MarketAppContext marketAppContext)
+        {
+            return marketAppContext.BuyHistory.Include(b => b.Products).ToList();
+        }
 
-
-            if (!File.Exists(path))
-                return default(T?);
-
-            string json = File.ReadAllText(path);
-
-            T? some = JsonSerializer.Deserialize<T>(json);
-
-            return some;
+        public static List<Admin> FileReadAdmin(MarketAppContext marketAppContext)
+        {
+            return marketAppContext.Admin.ToList();
         }
     }
 }

@@ -1,8 +1,13 @@
 ﻿using MarketProgram.Library.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace MarketProgram.UserSide.Helpers
+namespace MarketProgram.Library.Helpers.UserSide
 {
-    static internal class AllProductsPrice
+    static public class AllProductsPrice
     {
         public static double AllPrice(List<Product> products)
         {

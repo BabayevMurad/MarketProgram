@@ -1,4 +1,4 @@
-﻿using MarketProgram.AdminSide.Services;
+﻿using MarketProgram.Library.Services;
 using System.Text;
 
 namespace MarketProgram.AdminSide
@@ -10,7 +10,7 @@ namespace MarketProgram.AdminSide
             Console.InputEncoding = Encoding.UTF8;
             Console.OutputEncoding = Encoding.UTF8;
 
-            ControlPanel panel = new();
+            ControlPanelAdmin panel = new();
 
             panel.Start();
         }

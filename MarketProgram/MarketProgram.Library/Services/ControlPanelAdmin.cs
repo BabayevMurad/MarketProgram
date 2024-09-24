@@ -1,13 +1,13 @@
-﻿using MarketProgram.Library.Models;
-using MarketProgram.Library.Helpers.FileWork;
-using MarketProgram.AdminSide.Models;
+﻿using MarketProgram.Library.Helpers.FileWork;
 using MarketProgram.Library.Helpers;
+using MarketProgram.Library.Models;
+using MarketProgram.Library.Data;
 
-
-namespace MarketProgram.AdminSide.Services
+namespace MarketProgram.Library.Services
 {
-    internal class ControlPanel
+    public class ControlPanelAdmin
     {
+        public int Id { get; set; }
         List<Admin>? Admins { get; set; }
 
         Admin? Admin { get; set; }
@@ -16,9 +16,11 @@ namespace MarketProgram.AdminSide.Services
 
         List<BuyHistory> BuyHistories { get; set; }
 
-        public ControlPanel()
+        MarketAppContext? MarketAppContext { get; set; } = new MarketAppContext();
+
+        public ControlPanelAdmin()
         {
-            var AdminsTest = FileReadClass.FileRead<List<Admin>>("AdminFilePath");
+            var AdminsTest = FileReadClass.FileReadAdmin(MarketAppContext!);
 
             if (AdminsTest is null)
                 Admins = new List<Admin> { new Admin("Murad", "Babayev", "babay_aq38", "0503167673") };
@@ -27,7 +29,7 @@ namespace MarketProgram.AdminSide.Services
 
             AdminsTest = null;
 
-            var ProductsTest = FileReadClass.FileRead<List<Category>>("ProductsFilePath");
+            var ProductsTest = FileReadClass.FileReadProduct(MarketAppContext!);
 
             if (ProductsTest is null)
             {
@@ -47,7 +49,7 @@ namespace MarketProgram.AdminSide.Services
             else
                 Mehsul = ProductsTest;
 
-            var BuyHistoryTest = FileReadClass.FileRead<List<BuyHistory>>("BuyHistoryFilePath");
+            var BuyHistoryTest = FileReadClass.FileReadBuyHistory(MarketAppContext!);
 
             if (BuyHistoryTest is null)
                 BuyHistories = new List<BuyHistory>();
@@ -97,8 +99,8 @@ namespace MarketProgram.AdminSide.Services
                         switch (colorChoice)
                         {
                             case 0:
-                                FileSaveClass.FileSave(Admins, "AdminFilePath");
-                                FileSaveClass.FileSave(Mehsul, "ProductsFilePath");
+                                FileSaveClass.FileSaveAdmin(MarketAppContext!, Admins!);
+                                FileSaveClass.FileSaveProduct(MarketAppContext!, Mehsul);
                                 System.Environment.Exit(0);
                                 break;
                             case 1:
@@ -530,7 +532,8 @@ namespace MarketProgram.AdminSide.Services
 
             ConsoleKeyInfo key;
 
-            while (true) { 
+            while (true)
+            {
 
                 Console.Clear();
                 Console.ResetColor();
@@ -565,7 +568,7 @@ namespace MarketProgram.AdminSide.Services
                     case ConsoleKey.Enter:
                         if (colorChoice == 0)
                             return;
-                        if(Menyu5Checker(colorChoice, ref product))
+                        if (Menyu5Checker(colorChoice, ref product))
                         {
                             return;
                         }
@@ -975,7 +978,7 @@ namespace MarketProgram.AdminSide.Services
 
             ConsoleKeyInfo key;
 
-            string[] menyu = ["1.Statistika Product.", "2. Statistika Qiymət." ,"3.Çeklər."];
+            string[] menyu = ["1.Statistika Product.", "2. Statistika Qiymət.", "3.Çeklər."];
 
             while (true)
             {
@@ -1164,5 +1167,4 @@ namespace MarketProgram.AdminSide.Services
             }
         }
     }
-
 }

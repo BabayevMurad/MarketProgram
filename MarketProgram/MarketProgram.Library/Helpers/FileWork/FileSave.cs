@@ -1,30 +1,50 @@
-﻿using System.Configuration;
-using System.Text.Json;
+﻿using MarketProgram.Library.Data;
+using MarketProgram.Library.Models;
+
 
 namespace MarketProgram.Library.Helpers.FileWork
 {
     public static class FileSaveClass
     {
-        public static void FileSave<T>(T some, string fileWritePath)
+        public static void FileSaveUser(MarketAppContext marketAppContext, List<User> Data)
         {
-            string path;
 
-            path = ConfigurationManager.AppSettings[fileWritePath]!;
+            for (int i = 0; i < Data.Count; i++) 
+            {
+                marketAppContext.User.Update(Data[i]);
+            }
 
-            string json = JsonSerializer.Serialize(some);
-
-            File.WriteAllText(path, json);
+            marketAppContext.SaveChanges();
         }
 
-        public static void FileSave<T>(T some, string fileWritePath, bool mod)
+        public static void FileSaveProduct(MarketAppContext marketAppContext, List<Category> Data)
         {
-            string path;
+            for (int i = 0; i < Data.Count; i++)
+            {
+                marketAppContext.Category.Update(Data[i]);
+            }
 
-            path = ConfigurationManager.AppSettings[fileWritePath]!;
+            marketAppContext.SaveChanges();
+        }
 
-            string json = JsonSerializer.Serialize(some);
+        public static void FileSaveBuyHistory(MarketAppContext marketAppContext, List<BuyHistory> Data)
+        {
+            for (int i = 0; i < Data.Count; i++)
+            {
+                marketAppContext.BuyHistory.Update(Data[i]);
+            }
 
-            File.AppendAllText(path, json);
+            marketAppContext.SaveChanges();
+        }
+
+        public static void FileSaveAdmin(MarketAppContext marketAppContext, List<Admin> Data)
+        {
+            for (int i = 0; i < Data.Count; i++)
+            {
+                marketAppContext.Admin.Update(Data[i]);
+            }
+
+            marketAppContext.SaveChanges();
         }
     }
 }

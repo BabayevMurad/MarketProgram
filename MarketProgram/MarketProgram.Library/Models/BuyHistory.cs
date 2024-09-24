@@ -2,6 +2,7 @@
 {
     public class BuyHistory
     {
+        public int Id { get; set; }
         public string? UserLogin { get; set; }
         public DateTime BuyTime { get; set; }
         public List<Product>? Products { get; set; }
