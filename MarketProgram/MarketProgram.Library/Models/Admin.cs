@@ -17,17 +17,6 @@ namespace MarketProgram.Library.Models
         public Admin() { }
         public Admin(string name, string surname, string login, string pasword) { Name = name; Login = login; Pasword = pasword; Surname = surname; }
 
-        //public Admin(int ıd, string? name, string? surname, string? login, string? pasword, int buyHistoryId, BuyHistory buyHistory)
-        //{
-        //    Id = ıd;
-        //    Name = name;
-        //    Surname = surname;
-        //    Login = login;
-        //    Pasword = pasword;
-        //    BuyHistoryId = buyHistoryId;
-        //    BuyHistory = buyHistory;
-        //}
-
         public bool Equal(ref Admin user)
         {
             if (Login == user.Login && Pasword == user.Pasword) { return true; }

@@ -1,4 +1,6 @@
-﻿namespace MarketProgram.Library.Models
+﻿using MarketProgram.Library.Models.Dto_s;
+
+namespace MarketProgram.Library.Models
 {
     public class Product
     {
@@ -8,12 +10,9 @@
         public string? Description { get; set; }
         public int Count { get; set; }
         public string? CategoryName { get; set; }
-        public int? BuyHistoryId { get; set; }
-        public BuyHistory? BuyHistory { get; set; }
-        public int CategoryId { get; set; }
-        public Category Category { get; set; }
-        public int? UserId { get; set; }
-        public User? User { get; set; }
+        public int? CategoryId { get; set; }
+        public Category? Category { get; set; }
+        public List<BuyHistoryProduct>? BuyHistories { get; set; } 
 
         public Product() { }
 

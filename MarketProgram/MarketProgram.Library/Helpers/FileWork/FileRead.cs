@@ -19,7 +19,7 @@ namespace MarketProgram.Library.Helpers.FileWork
 
         public static List<BuyHistory> FileReadBuyHistory(MarketAppContext marketAppContext)
         {
-            return marketAppContext.BuyHistory.Include(b => b.Products).ToList();
+            return marketAppContext.BuyHistory.Include(b => b.ByProducts).Include(b => b.Products).ThenInclude(b => b.BuyHistories).ToList();
         }
 
         public static List<Admin> FileReadAdmin(MarketAppContext marketAppContext)

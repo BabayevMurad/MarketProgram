@@ -21,7 +21,16 @@ namespace MarketProgram.Library.Services
 
         public ControlPanelUser()
         {
-            var UsersTest = FileReadClass.FileReadUser(MarketAppContext!);
+            List<User> UsersTest = new List<User>();
+
+            try
+            {
+                UsersTest = FileReadClass.FileReadUser(MarketAppContext!);
+            }
+            catch (Exception)
+            {
+            }
+
 
             if (UsersTest is null)
                 Users = new List<User>();
@@ -30,9 +39,18 @@ namespace MarketProgram.Library.Services
 
             UsersTest = null;
 
-            var ProductsTest = FileReadClass.FileReadProduct(MarketAppContext!);
+            List<Category> ProductsTest = new List<Category>();
 
-            if (ProductsTest is null)
+            try
+            {
+                ProductsTest = FileReadClass.FileReadProduct(MarketAppContext!);
+            }
+            catch (Exception)
+            {
+            }
+
+
+            if ((ProductsTest is null) || (ProductsTest.Count() == 0))
             {
                 Mehsul = new List<Category> {
                     new Category("Un", new List<Product> {
@@ -50,9 +68,18 @@ namespace MarketProgram.Library.Services
             else
                 Mehsul = ProductsTest;
 
-            var BuyHistoryTest = FileReadClass.FileReadBuyHistory(MarketAppContext!);
+            List<BuyHistory> BuyHistoryTest = new List<BuyHistory>();
 
-            if (BuyHistoryTest is null)
+            try
+            {
+                BuyHistoryTest = FileReadClass.FileReadBuyHistory(MarketAppContext!);
+            }
+            catch (Exception)
+            {
+            }
+
+
+            if ((BuyHistoryTest is null) || (BuyHistoryTest.Count == 0) )
                 BuyHistories = new List<BuyHistory>();
             else
                 BuyHistories = BuyHistoryTest;
@@ -100,9 +127,15 @@ namespace MarketProgram.Library.Services
                         switch (colorChoice)
                         {
                             case 0:
-                                FileSaveClass.FileSaveUser(MarketAppContext!, Users!);
-                                FileSaveClass.FileSaveProduct(MarketAppContext! , Mehsul);
-                                FileSaveClass.FileSaveBuyHistory(MarketAppContext!, BuyHistories!);
+                                try
+                                {
+                                    FileSaveClass.FileSaveUser(MarketAppContext!, Users!);
+                                    FileSaveClass.FileSaveProduct(MarketAppContext! , Mehsul);
+                                    FileSaveClass.FileSaveBuyHistory(MarketAppContext!, BuyHistories!);
+                                }
+                                catch (Exception)
+                                {
+                                } 
                                 System.Environment.Exit(0);
                                 break;
                             case 1:

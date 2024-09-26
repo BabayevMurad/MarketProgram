@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MarketProgram.Library.Migrations
 {
     [DbContext(typeof(MarketAppContext))]
-    [Migration("20240923200628_Initial")]
+    [Migration("20240925125011_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -88,6 +88,21 @@ namespace MarketProgram.Library.Migrations
                     b.ToTable("Category");
                 });
 
+            modelBuilder.Entity("MarketProgram.Library.Models.Dto_s.BuyHistoryProduct", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BuyHistoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "BuyHistoryId");
+
+                    b.HasIndex("BuyHistoryId");
+
+                    b.ToTable("BuyHistoryProduct");
+                });
+
             modelBuilder.Entity("MarketProgram.Library.Models.Prices", b =>
                 {
                     b.Property<int>("Id")
@@ -118,7 +133,7 @@ namespace MarketProgram.Library.Migrations
                     b.Property<int?>("BuyHistoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("CategoryName")
@@ -175,37 +190,57 @@ namespace MarketProgram.Library.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("MarketProgram.Library.Models.Product", b =>
+            modelBuilder.Entity("MarketProgram.Library.Models.Dto_s.BuyHistoryProduct", b =>
                 {
                     b.HasOne("MarketProgram.Library.Models.BuyHistory", "BuyHistory")
+                        .WithMany("ByProducts")
+                        .HasForeignKey("BuyHistoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MarketProgram.Library.Models.Product", "Product")
+                        .WithMany("BuyHistories")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("BuyHistory");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("MarketProgram.Library.Models.Product", b =>
+                {
+                    b.HasOne("MarketProgram.Library.Models.BuyHistory", null)
                         .WithMany("Products")
                         .HasForeignKey("BuyHistoryId");
 
                     b.HasOne("MarketProgram.Library.Models.Category", "Category")
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
-                    b.HasOne("MarketProgram.Library.Models.User", "User")
+                    b.HasOne("MarketProgram.Library.Models.User", null)
                         .WithMany("Basket")
                         .HasForeignKey("UserId");
 
-                    b.Navigation("BuyHistory");
-
                     b.Navigation("Category");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MarketProgram.Library.Models.BuyHistory", b =>
                 {
+                    b.Navigation("ByProducts");
+
                     b.Navigation("Products");
                 });
 
             modelBuilder.Entity("MarketProgram.Library.Models.Category", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("MarketProgram.Library.Models.Product", b =>
+                {
+                    b.Navigation("BuyHistories");
                 });
 
             modelBuilder.Entity("MarketProgram.Library.Models.User", b =>

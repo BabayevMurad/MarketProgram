@@ -20,18 +20,11 @@ namespace MarketProgram.Library.Services
 
         public ControlPanelAdmin()
         {
-            var AdminsTest = FileReadClass.FileReadAdmin(MarketAppContext!);
-
-            if (AdminsTest is null)
-                Admins = new List<Admin> { new Admin("Murad", "Babayev", "babay_aq38", "0503167673") };
-            else
-                Admins = AdminsTest;
-
-            AdminsTest = null;
+            Admins = new List<Admin> { new Admin("Murad", "Babayev", "babay_aq38", "0503167673") };
 
             var ProductsTest = FileReadClass.FileReadProduct(MarketAppContext!);
 
-            if (ProductsTest is null)
+            if ((ProductsTest is null) || (ProductsTest.Count() == 0))
             {
                 Mehsul = new List<Category> {
                     new Category("Un", new List<Product> {
@@ -1043,12 +1036,23 @@ namespace MarketProgram.Library.Services
 
         void Bills()
         {
-            foreach (var buyHistory in BuyHistories)
+            if (BuyHistories.Count == 0)
             {
-                buyHistory.ConsoleWrite();
-            }
+                Console.WriteLine("Çeklər Yoxdur.");
 
-            Console.ReadKey();
+                Thread.Sleep(900);
+            }
+            else
+            {
+                Console.WriteLine("Çıxmaq üçün İstənilən Knopkaya Basın.");
+
+                foreach (var buyHistory in BuyHistories)
+                {
+                    buyHistory.ConsoleWrite();
+                }
+
+                Console.ReadKey();
+            }
         }
 
         #endregion

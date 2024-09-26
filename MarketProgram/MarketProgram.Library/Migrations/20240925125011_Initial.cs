@@ -96,8 +96,8 @@ namespace MarketProgram.Library.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Count = table.Column<int>(type: "int", nullable: false),
                     CategoryName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CategoryId = table.Column<int>(type: "int", nullable: true),
                     BuyHistoryId = table.Column<int>(type: "int", nullable: true),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -112,14 +112,42 @@ namespace MarketProgram.Library.Migrations
                         name: "FK_Product_Category_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Category",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Product_User_UserId",
                         column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id");
                 });
+
+            migrationBuilder.CreateTable(
+                name: "BuyHistoryProduct",
+                columns: table => new
+                {
+                    BuyHistoryId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BuyHistoryProduct", x => new { x.ProductId, x.BuyHistoryId });
+                    table.ForeignKey(
+                        name: "FK_BuyHistoryProduct_BuyHistory_BuyHistoryId",
+                        column: x => x.BuyHistoryId,
+                        principalTable: "BuyHistory",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BuyHistoryProduct_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BuyHistoryProduct_BuyHistoryId",
+                table: "BuyHistoryProduct",
+                column: "BuyHistoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Product_BuyHistoryId",
@@ -142,6 +170,9 @@ namespace MarketProgram.Library.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Admin");
+
+            migrationBuilder.DropTable(
+                name: "BuyHistoryProduct");
 
             migrationBuilder.DropTable(
                 name: "Price");

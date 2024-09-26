@@ -1,7 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using MarketProgram.Library.Models;
-
-namespace MarketProgram.Library.Models
+﻿namespace MarketProgram.Library.Models
 {
     public class User
     {
@@ -11,7 +8,7 @@ namespace MarketProgram.Library.Models
         public string? Login { get; set; }
         public string? Pasword { get; set; }
 
-        [JsonIgnore]
+        //I dont add relationship witdh products because this basket don't drafted.
         public List<Product>? Basket { get; set; }
 
         public User() { }
